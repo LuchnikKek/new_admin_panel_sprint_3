@@ -1,0 +1,51 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    image: postgres:13
+    volumes:
+      - db-volume:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=123qwe
+      - POSTGRES_USER=app
+      - POSTGRES_DB=movies_database
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d movies_database"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  django:
+    container_name: django
+    build: ./app
+    volumes:
+      - static-volume:/opt/app/static/
+      - media-volume:/opt/app/media
+    expose:
+      - "8000"
+    env_file:
+      - app/config/.env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    container_name: nginx
+    image: nginx:1.25.3
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./configs:/etc/nginx/conf.d:ro
+      - static-volume:/data/static:ro
+    depends_on:
+      - django
+    ports:
+      - "8000:8000"
+
+volumes:
+  db-volume:
+  static-volume:
+  media-volume:

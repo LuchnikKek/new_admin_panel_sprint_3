@@ -1,0 +1,7 @@
+/venv/
+/app/.idea/
+/app/config/.env
+/etl/.env
+/app/config/__pycache__
+/.idea/
+/etl/logs.log
