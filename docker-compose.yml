@@ -45,7 +45,30 @@ services:
     ports:
       - "8000:8000"
 
+  elastic:
+    container_name: elastic
+    image: elasticsearch:latest
+    volumes:
+      - es-volume:/usr/share/elasticsearch/data
+    expose:
+      - "9200"
+    ports:
+      - "9200:9200"
+    environment:
+      - "ES_JAVA_OPTS=-Xms200m -Xmx200m"
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    depends_on:
+      db:
+        condition: service_healthy
+
+
 volumes:
   db-volume:
   static-volume:
   media-volume:
+  es-volume:
+

@@ -1,6 +1,8 @@
-# Sprint 2
+# Sprint 3
 
-A project for second sprint for Yandex Middle Python Course.
+A project for third sprint for Yandex Middle Python Course.
+
+## Всё, что ниже - Readme прошлых спринтов. Новый лежит в `/etl`.
 
 
 ## Environment Variables

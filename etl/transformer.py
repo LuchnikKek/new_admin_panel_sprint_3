@@ -5,9 +5,7 @@ from configs import logger
 
 
 class Transformer:
-    def collapse_data(
-        self, film_works: list[tuple[str, set, ...]]
-    ) -> list[dict[str, Any]]:
+    def collapse_data(self, film_works: list[dict[str, Any]]) -> list[dict[str, Any]]:
         merged_data = defaultdict(
             lambda: {
                 'uuid': None,
@@ -48,7 +46,7 @@ class Transformer:
             }
             for v in merged_data.values()
         ]
-        logger.info(f'{self.__class__}: сжато до {len(result)} записей.')
+        logger.info(f'{self.__class__}: сжаты до количества {len(result)} записей.')
         return result
 
     def prepare_data(self, data: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -61,7 +59,10 @@ class Transformer:
                 'genre': list(record['genre_name']),
                 'title': record['title'],
                 'description': record['description'],
-                'director': next((info[1] for info in record['p_info'] if info[0] == 'director'), None),
+                'director': next(
+                    (info[1] for info in record['p_info'] if info[0] == 'director'),
+                    None,
+                ),
                 'actors_names': [
                     info[1] for info in record['p_info'] if info[0] == 'actor'
                 ],

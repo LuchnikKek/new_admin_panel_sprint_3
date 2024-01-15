@@ -27,20 +27,6 @@ swagger-down:
 logs:
 	docker compose logs -f $s & true
 
-elastic-create:
-	docker run -d -p 9200:9200 \
-			   --name=elastic \
-			   -e "discovery.type=single-node" \
-			   -e "xpack.security.enabled=false" \
-   			   -e ES_JAVA_OPTS="-Xms200m -Xmx200m" \
-   			   elasticsearch:8.6.2
+all-up: up swagger-up
 
-elastic-up:
-	docker container start elastic
-
-elastic-down:
-	docker stop elastic | true
-
-all-up: up swagger-up elastic-up
-
-all-down: down swagger-down elastic-down
+all-down: down swagger-down

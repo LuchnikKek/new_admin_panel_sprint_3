@@ -78,6 +78,7 @@ class _Settings(BaseSettings):
     loader: LoaderSettings = LoaderSettings()
     PG_DSN: PostgresDsn
     TABLE_NAMES: tuple
+    LOOP_PAUSE_SEC: int
 
     model_config = SettingsConfigDict(
         env_file='.env', env_file_encoding='utf-8', extra='ignore'
