@@ -46,7 +46,9 @@ class Transformer:
             }
             for v in merged_data.values()
         ]
-        logger.info(f'{self.__class__}: сжаты до количества {len(result)} записей.')
+        logger.info(
+            f'{self.__class__.__name__}: сжаты до количества {len(result)} записей.'
+        )
         return result
 
     def prepare_data(self, data: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -81,5 +83,7 @@ class Transformer:
                 ],
             }
             prepared_data.extend([service_dict, data_dict])
-        logger.info(f'{self.__class__}: подготовлено {len(prepared_data)//2} записей.')
+        logger.info(
+            f'{self.__class__.__name__}: подготовлено {len(prepared_data)//2} записей.'
+        )
         return prepared_data

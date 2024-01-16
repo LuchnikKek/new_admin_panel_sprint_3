@@ -2,3 +2,4 @@ psycopg2-binary==2.9.7
 pydantic-settings==2.1.0
 pydantic==2.5.3
 elasticsearch==8.11.1
+backoff==2.2.1

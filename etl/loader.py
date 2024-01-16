@@ -1,5 +1,7 @@
 from typing import Any
 
+import backoff
+import elastic_transport
 from elastic_transport import ObjectApiResponse
 from elasticsearch import Elasticsearch
 
@@ -7,11 +9,9 @@ from configs import LoaderSettings, logger
 
 
 class Loader:
-    def __init__(self, settings: LoaderSettings):
+    def __init__(self, settings: LoaderSettings, connection: Elasticsearch):
         self.settings = settings
-        self.es_connection = Elasticsearch(
-            f'http://{self.settings.ELASTIC_HOST}:{self.settings.ELASTIC_PORT}'
-        )
+        self.es_connection = connection
 
     def load_data(self, prepared_data: list[dict[str, Any]]) -> list[ObjectApiResponse]:
         # для каждой строки даты по одной служебной
@@ -22,10 +22,15 @@ class Loader:
             for i in range(0, len(prepared_data), batch_size)
         ]
         logger.info(
-            f'{self.__class__}: {data_length - len(result) + 1}/{data_length} записей сохранены в ElasticSearch.'
+            f'{self.__class__.__name__}: {data_length - len(result) + 1}/{data_length} записей сохранены в ElasticSearch.'
         )
         return result
 
+    @backoff.on_exception(
+        exception=elastic_transport.ConnectionTimeout,
+        wait_gen=backoff.expo,
+        max_tries=5,
+    )
     def _bulk_to_elastic(self, prepared_data) -> ObjectApiResponse:
         # todo: а он по идее должен знать название индекса
         res = self.es_connection.bulk(
@@ -36,7 +41,7 @@ class Loader:
         )
         if res.body:
             logger.error(
-                f'{self.__class__}: ошибка при сохранении в Elastic: {res.body}'
+                f'{self.__class__.__name__}: ошибка при сохранении в Elastic: {res.body}'
             )
         else:
             return res

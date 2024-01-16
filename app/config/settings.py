@@ -28,11 +28,21 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
 # DDT repair from official doc (doesn't work)
 if DEBUG:
     import socket  # only if you haven't already imported this
+
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+    INTERNAL_IPS = [ip[: ip.rfind(".")] + ".1" for ip in ips] + [
+        "127.0.0.1",
+        "10.0.2.2",
+    ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1',
+]
 
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8080", ]
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8080",
+    "https://127.0.0.1:8080",
+]
 
 
 # Static files (CSS, JavaScript, Images)

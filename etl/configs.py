@@ -59,8 +59,6 @@ class ExtractorSettings(BaseSettings):
 
 
 class LoaderSettings(BaseSettings):
-    ELASTIC_HOST: str
-    ELASTIC_PORT: str
     INDEX_NAME: str
     BATCH_SIZE: int
 
@@ -77,6 +75,8 @@ class _Settings(BaseSettings):
     extractor: ExtractorSettings = ExtractorSettings()
     loader: LoaderSettings = LoaderSettings()
     PG_DSN: PostgresDsn
+    ELASTIC_HOST: str
+    ELASTIC_PORT: str
     TABLE_NAMES: tuple
     LOOP_PAUSE_SEC: int
 

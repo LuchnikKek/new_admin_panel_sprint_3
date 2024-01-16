@@ -1,9 +1,3 @@
-admin:
-	DJANGO_SUPERUSER_USERNAME=admin \
-	DJANGO_SUPERUSER_PASSWORD=123123 \
-	DJANGO_SUPERUSER_EMAIL=mail@mail.ru \
-	python app/manage.py createsuperuser --noinput | true
-
 up:
 	docker compose up -d --build
 

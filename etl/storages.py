@@ -1,6 +1,6 @@
 import abc
-from typing import Any, Dict
 import json
+from typing import Any, Dict
 
 
 class BaseStorage(abc.ABC):
@@ -41,5 +41,7 @@ class JsonFileStorage(BaseStorage):
             with open(self.file_path, "r") as file:
                 state = json.load(file)
         except FileNotFoundError:
+            with open(self.file_path, 'w') as file:
+                file.write('{}')
             return {}
         return state
